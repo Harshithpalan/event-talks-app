@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Tracker</title>
+    
+    <!-- Meta tags for basic SEO -->
+    <meta name="description" content="Track, filter, and share the latest BigQuery release notes and features directly from Google Cloud Platform.">
+    <meta name="keywords" content="BigQuery, Google Cloud, Release Notes, Database, SQL, Data Warehouse">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/google-cloud.png">
+    
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- App Header -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="brand">
+                <div class="brand-icon">BQ</div>
+                <h1>BigQuery <span>Release Notes Hub</span></h1>
+            </a>
+            
+            <div class="header-actions">
+                <div class="update-status" id="update-status-container">
+                    Last sync: <span id="last-updated-text">Never</span>
+                </div>
+                <button class="btn btn-secondary" id="refresh-btn" title="Refresh Release Notes">
+                    <svg id="refresh-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    <span>Refresh</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main>
+        <!-- Controls: Search & Category Chips -->
+        <section class="controls-panel">
+            <div class="search-row">
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search release notes by keywords, dates, features...">
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <span class="filter-label">Filter:</span>
+                <div id="filter-container" style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                    <!-- Filter chips will be injected by JavaScript -->
+                    <div class="filter-chip active">All Updates</div>
+                </div>
+            </div>
+            
+            <div class="stats-row">
+                <div>
+                    Showing <span id="filtered-notes-count"><strong>0</strong></span> out of <span id="total-notes-count"><strong>0</strong></span> parsed updates
+                </div>
+                <div style="font-style: italic;">
+                    Source: Google Cloud RSS
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid Container for Notes -->
+        <section class="notes-grid" id="notes-container">
+            <!-- Cards (or skeleton loaders) will be injected by JavaScript -->
+        </section>
+    </main>
+
+    <!-- Tweet Customization Modal Overlay -->
+    <div class="modal-overlay" id="tweet-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: #1d9bf0;">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    Compose Update Tweet
+                </h3>
+                <button class="modal-close" id="close-modal" aria-label="Close modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                    Customize your tweet text below. The update is pre-formatted and clipped to fit under X's character limit.
+                </p>
+                
+                <div class="tweet-textarea-wrapper">
+                    <textarea class="tweet-textarea" id="tweet-textarea" placeholder="What's happening?"></textarea>
+                    <div class="character-counter" id="char-counter">0 / 280</div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-tweet">Cancel</button>
+                <button class="btn btn-secondary" id="copy-tweet" title="Copy to clipboard">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy Text
+                </button>
+                <button class="btn btn-primary" id="submit-tweet" style="background: #1d9bf0; color: #fff;">
+                    Share on X
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Message -->
+    <div class="toast-container">
+        <div class="toast" id="toast">
+            <span id="toast-message">Success!</span>
+        </div>
+    </div>
+
+    <!-- Client-side Application Logic -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
